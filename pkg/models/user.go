@@ -2,14 +2,15 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/thalesmonteiro/measurementApi/pkg/config"
+	//"github.com/thalesmonteiro/measurementApi/pkg/config"
+	"api/pkg/config"
 )
 
 var db *gorm.DB
 
 type User struct {
-	UserID   int    `json:"user_id"`
-	UserName string `json:"username"`
+	UserID   int    `json:"user_id" gorm:"primaryKey" gorm:"autoIncrement"`
+	Username string `json:"username"`
 }
 
 func init() {
@@ -39,5 +40,11 @@ func GetUserById(Id int64) (*User, *gorm.DB) {
 func DeleteUser(ID int64) User {
 	var user User
 	db.Where("user_id = ?", ID).Delete(user)
+	return user
+}
+
+func GetUserByUsername(username string) User{
+	var user User
+	db.Where("username = ?", username).Find(&user)
 	return user
 }

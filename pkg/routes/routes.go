@@ -2,13 +2,14 @@ package routes
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/thalesmonteiro/measurementApi/pkg/controllers"
+	//"github.com/thalesmonteiro/measurementApi/pkg/controllers"
+	"api/pkg/controllers"
 )
 
-var RegisterBookStoreRoutes = func(router *mux.Router) {
-	router.HandleFunc("/book/", controllers.C).Methods("POST")
-	router.HandleFunc("/book/", controllers.GetBook).Methods("GET")
-	router.HandleFunc("/book/{bookId}", controllers.GetBookById).Methods("GET")
-	router.HandleFunc("/book/{bookId}", controllers.UpdateBook).Methods("PUT")
-	router.HandleFunc("/book/{bookId}", controllers.DeleteBook).Methods("DELETE")
+var RegisterRoutes = func(router *mux.Router) {
+	router.HandleFunc("/user/", controllers.CreateUser).Methods("POST")
+	router.HandleFunc("/user/", controllers.GetUser).Methods("GET")
+	router.HandleFunc("/user/{userId}", controllers.GetUserById).Methods("GET")
+	router.HandleFunc("/user/{userId}", controllers.UpdateUser).Methods("PUT")
+	router.HandleFunc("/user/{userId}", controllers.DeleteUser).Methods("DELETE")
 }
