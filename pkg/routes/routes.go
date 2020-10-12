@@ -1,12 +1,12 @@
 package routes
 
 import (
-	//"github.com/example/simple-REST/pkg/controllers"
 	"github.com/gorilla/mux"
+	"github.com/thalesmonteiro/measurementApi/pkg/controllers"
 )
 
 var RegisterBookStoreRoutes = func(router *mux.Router) {
-	router.HandleFunc("/book/", controllers.CreateBook).Methods("POST")
+	router.HandleFunc("/book/", controllers.C).Methods("POST")
 	router.HandleFunc("/book/", controllers.GetBook).Methods("GET")
 	router.HandleFunc("/book/{bookId}", controllers.GetBookById).Methods("GET")
 	router.HandleFunc("/book/{bookId}", controllers.UpdateBook).Methods("PUT")
