@@ -1,13 +1,13 @@
 package controllers
 
 import (
-	"api/pkg/models"
+	"api/internal/models"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
-	//"github.com/thalesmonteiro/measurementApi/pkg/models"
-	//"github.com/thalesmonteiro/measurementApi/pkg/utils"
-	"api/pkg/utils"
+	//"github.com/thalesmonteiro/measurementApi/internal/models"
+	//"github.com/thalesmonteiro/measurementApi/internal/utils"
+	"api/internal/utils"
 	"net/http"
 	"strconv"
 )
@@ -37,22 +37,51 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJson(w, http.StatusCreated, user)
 }
 
-func GetUser(w http.ResponseWriter, r *http.Request) {
+func GetAllUser(w http.ResponseWriter, r *http.Request) {
 	users := models.GetAllUser()
 
 	utils.RespondWithJson(w, http.StatusOK, users)
 }
 
-func GetUserById(w http.ResponseWriter, r *http.Request) {
+func GetUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	userId := vars["userId"]
-	ID, err := strconv.ParseInt(userId, 0, 0)
+	parameter := vars["userInfo"]
+	ID, err := strconv.ParseInt(parameter, 0, 0)
 	if err != nil {
-		fmt.Println("Error while parsing")
+		userDetails := models.GetUserByUsername(parameter)
+		res, _ := json.Marshal(userDetails)
+
+		if userDetails.UserID == 0 {
+			utils.RespondWithError(w, http.StatusBadRequest, "There is no registered user with the given username.")
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(res)
+
+		return
 	}
 	userDetails, _ := models.GetUserById(ID)
+	if userDetails.UserID == 0 {
+		utils.RespondWithError(w, http.StatusBadRequest, "There is no registered user with the given userId.")
+		return
+	}
 	res, _ := json.Marshal(userDetails)
-	w.Header().Set("Content-Type", "pkglication/json")
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+
+func GetUserByUsername(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	username := vars["userName"]
+	//ID, err := strconv.ParseInt(userId, 0, 0)
+	//if err != nil {
+	//	fmt.Println("Error while parsing")
+	//}
+	userDetails := models.GetUserByUsername(username)
+	res, _ := json.Marshal(userDetails)
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
@@ -90,4 +119,9 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
+}
+
+func GetUsersHasMeasure(w http.ResponseWriter, r *http.Request) {
+	users := models.GetUsersHasMeasure()
+	utils.RespondWithJson(w, http.StatusOK, users)
 }

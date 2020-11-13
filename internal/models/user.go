@@ -2,8 +2,8 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	//"github.com/thalesmonteiro/measurementApi/pkg/config"
-	"api/pkg/config"
+	//"github.com/thalesmonteiro/measurementApi/internal/config"
+	"api/internal/config"
 )
 
 var db *gorm.DB
@@ -43,8 +43,14 @@ func DeleteUser(ID int64) User {
 	return user
 }
 
-func GetUserByUsername(username string) User{
+func GetUserByUsername(username string) User {
 	var user User
 	db.Where("username = ?", username).Find(&user)
+	return user
+}
+
+func GetUsersHasMeasure() []User {
+	var user []User
+	db.Joins("JOIN value_types ON value_types.user_id = users.user_id").Joins("JOIN measures ON value_types.type_id = measures.type_id").Group("user_id").Find(&user)
 	return user
 }

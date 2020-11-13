@@ -3,11 +3,12 @@ package main
 import (
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	//"github.com/thalesmonteiro/measurementApi/pkg/routes"
-	"api/pkg/routes"
+	//"github.com/thalesmonteiro/measurementApi/internal/routes"
+	"api/internal/routes"
 	"log"
 	"net/http"
 )
+
 func main() {
 	r := mux.NewRouter()
 	routes.RegisterRoutes(r)
