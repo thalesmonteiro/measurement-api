@@ -12,9 +12,14 @@ import (
 	"strconv"
 )
 
-var NewUser models.User
-
-// Username in request body
+// @Tags User Access
+// @Summary Create a User
+// @Description Create a user in the database
+// @Success 200 "Success"
+// @Success 204 "No Content"
+// @Accept json
+// @Param username body models.User true "username"
+// @Router /user/ [POST]
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	//Parse the body to user model
 	createUser := &models.User{}
@@ -37,12 +42,18 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJson(w, http.StatusCreated, user)
 }
 
+// @Tags User Access
+// @Summary Get all Users
+// @Description List all users in database
+// @Success 200 "Success"
+// @Router /user/ [GET]
 func GetAllUser(w http.ResponseWriter, r *http.Request) {
 	users := models.GetAllUser()
 
 	utils.RespondWithJson(w, http.StatusOK, users)
 }
 
+// TODO validar esse endpoint
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	parameter := vars["userInfo"]
@@ -72,6 +83,14 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+// @Tags User Access
+// @Summary Get an User
+// @Description List of a user in database
+// @Success 200 "Success"
+// @Success 204 "No Content"
+// @Accept json
+// @Param username body models.User true "username"
+// @Router /user/ [GET]
 func GetUserByUsername(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	username := vars["userName"]
@@ -86,6 +105,15 @@ func GetUserByUsername(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+// @Tags User Access
+// @Summary Update User by ID
+// @Description Update an user information
+// @Success 200 "Success"
+// @Success 204 "No Content"
+// @Accept json
+// @Param username and id body models.User true "username"
+// @Param userId path int true "userId"
+// @Router /user{userId}/ [PUT]
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	var updateUser = &models.User{}
 	utils.ParseBody(r, updateUser)
@@ -107,6 +135,13 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+// @Tags User Access
+// @Summary Delete User by ID
+// @Description Update an user information
+// @Success 200 "Success"
+// @Accept json
+// @Param userId path int true "userId"
+// @Router /user{userId}/ [DELETE]
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	userId := vars["userId"]
@@ -121,6 +156,12 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+// @Tags User Access
+// @Summary Get Users has measures
+// @Description Update an user information
+// @Success 200 "Success"
+// @Accept json
+// @Router /usermeasure/ [GET]
 func GetUsersHasMeasure(w http.ResponseWriter, r *http.Request) {
 	users := models.GetUsersHasMeasure()
 	utils.RespondWithJson(w, http.StatusOK, users)

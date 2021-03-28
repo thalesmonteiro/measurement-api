@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"github.com/gorilla/mux"
-	//"github.com/thalesmonteiro/measurementApi/internal/controllers"
 	"api/internal/controllers"
+	"github.com/gorilla/mux"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 var RegisterRoutes = func(router *mux.Router) {
@@ -22,4 +22,5 @@ var RegisterRoutes = func(router *mux.Router) {
 	router.HandleFunc("/measure/", controllers.L3DecoderPayload).Methods("POST")
 	router.HandleFunc("/measure/{username}", controllers.GetAllMeasureFromUsername).Methods("GET")
 
+	router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 }
