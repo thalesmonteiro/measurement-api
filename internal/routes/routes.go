@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
-
+//Routes
 var RegisterRoutes = func(router *mux.Router) {
 	router.HandleFunc("/user/", controllers.CreateUser).Methods("POST")
 	router.HandleFunc("/user/", controllers.GetAllUser).Methods("GET")

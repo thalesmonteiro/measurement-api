@@ -7,7 +7,7 @@ import (
 )
 
 var db *gorm.DB
-
+//user
 type User struct {
 	UserID   int    `json:"user_id" gorm:"primaryKey" gorm:"autoIncrement"`
 	Username string `json:"username"`
